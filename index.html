@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Festa per Pio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f5f2ed;
+      --card: #ffffff;
+      --border: rgba(0,0,0,0.08);
+      --text: #1a1a1a;
+      --muted: rgba(26,26,26,0.45);
+      --accent-on: #1a7a3c;
+      --accent-off: #cc2200;
+      --accent-wait: #b07d2a;
+      --current: var(--accent-wait);
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      overflow: hidden;
+    }
+
+    /* animated grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0.5;
+    }
+
+    /* ambient glow blob */
+    .glow {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--current) 0%, transparent 70%);
+      opacity: 0.06;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      transition: background 1s ease;
+      animation: pulse 6s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.06; }
+      50% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.1; }
+    }
+
+    .wrapper {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* top bar */
+    .topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 2.5rem;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      background: rgba(245,242,237,0.85);
+      z-index: 10;
+      opacity: 0;
+      animation: fadeDown 0.8s 0.2s ease forwards;
+    }
+
+    .event-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+    }
+
+    .live-dot {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .live-dot::before {
+      content: '';
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--current);
+      animation: blink 2s ease infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* main card */
+    .card {
+      width: 100%;
+      max-width: 560px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 3.5rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 0.9s 0.4s cubic-bezier(0.22,1,0.36,1) forwards;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.08);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--current), transparent);
+      opacity: 0.5;
+    }
+
+    /* status badge */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 0.4rem 1rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--current);
+      margin-bottom: 2rem;
+    }
+
+    .status-badge span {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--current);
+      animation: blink 2s ease infinite;
+    }
+
+    /* big status word */
+    .status-word {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 10vw, 5.5rem);
+      line-height: 0.9;
+      color: var(--current);
+      letter-spacing: 0.02em;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 0 80px color-mix(in srgb, var(--current) 30%, transparent);
+    }
+
+    /* divider */
+    .divider {
+      width: 40px;
+      height: 1px;
+      background: var(--border);
+      margin: 0 auto 1.5rem;
+    }
+
+    /* message */
+    .message {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--muted);
+      font-weight: 300;
+      max-width: 360px;
+      margin: 0 auto 2rem;
+    }
+
+    .message strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* detail pills */
+    .details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      justify-content: center;
+    }
+
+    .pill {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 0.45rem 1.1rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .pill .icon { font-size: 0.9rem; }
+
+    /* footer */
+    .footer {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      text-align: center;
+      padding: 1.2rem;
+      font-size: 0.72rem;
+      color: rgba(240,236,228,0.2);
+      letter-spacing: 0.08em;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.8s ease forwards;
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeDown {
+      to { opacity: 1; }
+    }
+
+    /* responsive */
+    @media (max-width: 480px) {
+      .card { padding: 2.5rem 1.8rem; border-radius: 18px; }
+      .topbar { padding: 1.2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="glow"></div>
+
+  <div class="topbar">
+    <div class="event-name">FESTA PER PIO</div>
+    <div class="live-dot">Stato in tempo reale</div>
+  </div>
+
+  <div class="wrapper">
+    <div class="card">
+
+      <div class="status-badge">
+        <span></span>
+        Aggiornato oggi
+      </div>
+
+      <div class="status-word">In attesa del meteo...</div>
+      <div class="divider"></div>
+      <p class="message">
+        Questa pagina verrà aggiornata<br/>
+        <strong>nella settimana precedente alla festa</strong> per confermare<br/>
+        se si svolgerà oppure no.
+      </p>
+      <div class="details">
+        <div class="pill"><span class="icon">🕐</span> Il 23 maggio dalle 15:00</div>
+        <div class="pill"><span class="icon">📍</span> Via San Giuseppe 4, 6853 Ligornetto</div>
+        <div class="pill"><span class="icon">📞</span> Per eventuali comunicazioni: 091 647 05 80</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer">Festa per Pio · aggiornamento il giorno dell'evento</div>
+
+</body>
+</html>
