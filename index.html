@@ -24,7 +24,7 @@
       background: var(--bg);
       color: var(--text);
       font-family: 'DM Sans', sans-serif;
-      overflow: hidden;
+      overflow-y: auto;
     }
 
     /* animated grain overlay */
@@ -60,12 +60,12 @@
     }
 
     .wrapper {
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 2rem;
+      padding: 7rem 2rem 4rem;
       position: relative;
       z-index: 1;
     }
@@ -244,6 +244,36 @@
       to { opacity: 1; }
     }
 
+    .info-block {
+      background: rgba(0,0,0,0.03);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.2rem 1.4rem;
+      text-align: left;
+      margin-top: 1rem;
+    }
+
+    .info-title {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 0.6rem;
+    }
+
+    .info-text {
+      font-size: 0.85rem;
+      line-height: 1.65;
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    .info-text strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
     /* responsive */
     @media (max-width: 480px) {
       .card { padding: 2.5rem 1.8rem; border-radius: 18px; }
@@ -268,6 +298,7 @@
         Aggiornato oggi
       </div>
 
+      <!-- ✅ QUANDO L'EVENTO SI FA: tieni questo, elimina il blocco ANNULLATO sotto -->
       <div class="status-word">Festa confermata</div>
       <div class="divider"></div>
       <p class="message">
@@ -275,10 +306,23 @@
         Ecco un promemoria dei dettagli:
       </p>
       <div class="details">
-        <div class="pill"><span class="icon">🕐</span> Dalle 15:00</div>
         <div class="pill"><span class="icon">📍</span> Via San Giuseppe 4, 6853 Ligornetto</div>
+        <div class="pill"><span class="icon">🕐</span> Dalle 15:00</div>
         <div class="pill"><span class="icon">📞</span> Per eventuali comunicazioni: 091 647 05 80</div>
       </div>
+
+      <div class="divider" style="margin-top: 2rem;"></div>
+
+      <div class="info-block">
+        <div class="info-title">🅿️ Parcheggi</div>
+        <p class="info-text">Vi chiediamo di utilizzare i parcheggi gratuiti della <strong>chiesetta di San Giuseppe</strong>, dell'<strong>asilo</strong> o del <strong>campo da calcio</strong> dopo il Museo Vela. In alternativa i parcheggi a pagamento dell'<strong>oratorio</strong> o di <strong>Casa Pessina</strong>. Quelli di casa nostra saranno riservati per chi ha difficoltà nel camminare. Vi chiediamo inoltre di <strong>non entrare nei prati</strong>.</p>
+      </div>
+
+      <div class="info-block">
+        <div class="info-title">📸 Foto</div>
+        <p class="info-text">Dopo la festa su questo sito potrete <strong>caricare le foto</strong> che avete fatto e <strong>scaricare</strong> quelle degli altri partecipanti.</p>
+      </div>
+
     </div>
   </div>
 
@@ -286,4 +330,3 @@
 
 </body>
 </html>
-
