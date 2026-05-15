@@ -16,8 +16,7 @@
       --muted: rgba(26,26,26,0.45);
       --accent-on: #1a7a3c;
       --accent-off: #cc2200;
-      --accent-wait: #b07d2a;
-      --current: var(--accent-wait);
+      --current: var(--accent-on); /* change to var(--accent-off) when cancelled */
     }
 
     html, body {
@@ -269,23 +268,22 @@
         Aggiornato oggi
       </div>
 
-      <div class="status-word">In attesa del meteo...</div>
+      <div class="status-word">Festa confermata</div>
       <div class="divider"></div>
       <p class="message">
-        Questa pagina verrà aggiornata<br/>
-        <strong>nella settimana precedente alla festa</strong> per confermare<br/>
-        se si svolgerà oppure verrà rinviata al 6 giugno.
+        <strong>Vi aspettiamo...</strong><br/>
+        Ecco un promemoria dei dettagli:
       </p>
       <div class="details">
-        <div class="pill"><span class="icon">🕐</span> Il 23 maggio dalle 15:00</div>
+        <div class="pill"><span class="icon">🕐</span> Dalle 15:00</div>
         <div class="pill"><span class="icon">📍</span> Via San Giuseppe 4, 6853 Ligornetto</div>
         <div class="pill"><span class="icon">📞</span> Per eventuali comunicazioni: 091 647 05 80</div>
       </div>
-
     </div>
   </div>
 
-  <div class="footer">Festa per Pio · aggiornamento il giorno dell'evento</div>
+  <div class="footer">Ultimo aggiornamento · [DATA] · [ORA]</div>
 
 </body>
 </html>
+
