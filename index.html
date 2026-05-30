@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Festa per Pio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -14,20 +14,16 @@
       --border: rgba(0,0,0,0.08);
       --text: #1a1a1a;
       --muted: rgba(26,26,26,0.45);
-      --accent-on: #1a7a3c;
-      --accent-off: #cc2200;
-      --current: var(--accent-on); /* change to var(--accent-off) when cancelled */
+      --accent: #b07d2a;
     }
 
     html, body {
-      height: 100%;
       background: var(--bg);
       color: var(--text);
       font-family: 'DM Sans', sans-serif;
       overflow-y: auto;
     }
 
-    /* animated grain overlay */
     body::before {
       content: '';
       position: fixed;
@@ -35,42 +31,29 @@
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
       pointer-events: none;
       z-index: 100;
-      opacity: 0.5;
+      opacity: 0.15;
     }
 
-    /* ambient glow blob */
     .glow {
       position: fixed;
       width: 600px;
       height: 600px;
       border-radius: 50%;
-      background: radial-gradient(circle, var(--current) 0%, transparent 70%);
-      opacity: 0.06;
+      background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+      opacity: 0.05;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       pointer-events: none;
-      transition: background 1s ease;
       animation: pulse 6s ease-in-out infinite;
     }
 
     @keyframes pulse {
-      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.06; }
-      50% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.1; }
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.05; }
+      50% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.09; }
     }
 
-    .wrapper {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 7rem 2rem 4rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* top bar */
+    /* topbar */
     .topbar {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -93,44 +76,41 @@
       color: var(--muted);
     }
 
-    .live-dot {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+    .topbar-badge {
       font-size: 0.75rem;
       letter-spacing: 0.1em;
       color: var(--muted);
       text-transform: uppercase;
     }
 
-    .live-dot::before {
-      content: '';
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: var(--current);
-      animation: blink 2s ease infinite;
+    /* wrapper */
+    .wrapper {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 7rem 2rem 5rem;
+      position: relative;
+      z-index: 1;
+      gap: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto;
     }
 
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
-
-    /* main card */
+    /* hero card */
     .card {
       width: 100%;
-      max-width: 560px;
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 24px;
-      padding: 3.5rem 3rem;
+      padding: 3rem 3rem 2.5rem;
       text-align: center;
       position: relative;
       overflow: hidden;
       opacity: 0;
       transform: translateY(30px);
       animation: fadeUp 0.9s 0.4s cubic-bezier(0.22,1,0.36,1) forwards;
-      box-shadow: 0 4px 40px rgba(0,0,0,0.08);
+      box-shadow: 0 4px 40px rgba(0,0,0,0.07);
     }
 
     .card::before {
@@ -140,60 +120,47 @@
       transform: translateX(-50%);
       width: 60%;
       height: 1px;
-      background: linear-gradient(90deg, transparent, var(--current), transparent);
-      opacity: 0.5;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0.6;
     }
 
-    /* status badge */
     .status-badge {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      background: rgba(255,255,255,0.05);
+      background: rgba(0,0,0,0.03);
       border: 1px solid var(--border);
       border-radius: 100px;
       padding: 0.4rem 1rem;
       font-size: 0.72rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--current);
-      margin-bottom: 2rem;
+      color: var(--accent);
+      margin-bottom: 1.8rem;
     }
 
-    .status-badge span {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--current);
-      animation: blink 2s ease infinite;
-    }
-
-    /* big status word */
-    .status-word {
+    .hero-title {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(3rem, 10vw, 5.5rem);
+      font-size: clamp(3.5rem, 12vw, 6rem);
       line-height: 0.9;
-      color: var(--current);
+      color: var(--accent);
       letter-spacing: 0.02em;
-      margin-bottom: 1.5rem;
-      text-shadow: 0 0 80px color-mix(in srgb, var(--current) 30%, transparent);
+      margin-bottom: 1.2rem;
+      text-shadow: 0 0 60px color-mix(in srgb, var(--accent) 20%, transparent);
     }
 
-    /* divider */
     .divider {
       width: 40px;
       height: 1px;
       background: var(--border);
-      margin: 0 auto 1.5rem;
+      margin: 0 auto 1.4rem;
     }
 
-    /* message */
     .message {
       font-size: 1rem;
-      line-height: 1.7;
+      line-height: 1.75;
       color: var(--muted);
       font-weight: 300;
-      max-width: 360px;
-      margin: 0 auto 2rem;
     }
 
     .message strong {
@@ -201,82 +168,186 @@
       font-weight: 500;
     }
 
-    /* detail pills */
-    .details {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-      justify-content: center;
+    /* poetry card */
+    .poetry-card {
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 2.5rem 3rem;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 0.9s 0.6s cubic-bezier(0.22,1,0.36,1) forwards;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.07);
     }
 
-    .pill {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      padding: 0.45rem 1.1rem;
-      font-size: 0.82rem;
+    .poetry-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0.4;
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
       color: var(--muted);
+      margin-bottom: 1.6rem;
       display: flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.6rem;
     }
 
-    .pill .icon { font-size: 0.9rem; }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .poem-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+
+    .poem-author {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 1.8rem;
+      font-style: italic;
+    }
+
+    .poem-text {
+      font-family: 'DM Serif Display', serif;
+      font-style: italic;
+      font-size: 1rem;
+      line-height: 2;
+      color: var(--text);
+      white-space: pre-line;
+      border-left: 2px solid color-mix(in srgb, var(--accent) 40%, transparent);
+      padding-left: 1.4rem;
+      margin-bottom: 2rem;
+    }
+
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 100px;
+      padding: 0.65rem 1.5rem;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .download-btn:hover {
+      opacity: 0.88;
+      transform: translateY(-1px);
+    }
+
+    /* photos card */
+    .photos-card {
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 2.5rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 0.9s 0.8s cubic-bezier(0.22,1,0.36,1) forwards;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.07);
+    }
+
+    .photos-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0.4;
+    }
+
+    .photos-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .photos-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem;
+      color: var(--text);
+      margin-bottom: 0.6rem;
+    }
+
+    .photos-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.65;
+      font-weight: 300;
+      margin-bottom: 1.8rem;
+    }
+
+    .photos-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: transparent;
+      color: var(--accent);
+      text-decoration: none;
+      border: 1.5px solid var(--accent);
+      border-radius: 100px;
+      padding: 0.65rem 1.5rem;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+    }
+
+    .photos-btn:hover {
+      background: var(--accent);
+      color: #fff;
+      transform: translateY(-1px);
+    }
 
     /* footer */
     .footer {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
       text-align: center;
-      padding: 1.2rem;
+      padding: 1.5rem;
       font-size: 0.72rem;
-      color: rgba(240,236,228,0.2);
+      color: rgba(26,26,26,0.2);
       letter-spacing: 0.08em;
       opacity: 0;
-      animation: fadeUp 0.8s 0.8s ease forwards;
+      animation: fadeUp 0.8s 1s ease forwards;
     }
 
     @keyframes fadeUp {
       to { opacity: 1; transform: translateY(0); }
     }
-
     @keyframes fadeDown {
       to { opacity: 1; }
     }
 
-    .info-block {
-      background: rgba(0,0,0,0.03);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 1.2rem 1.4rem;
-      text-align: left;
-      margin-top: 1rem;
-    }
-
-    .info-title {
-      font-size: 0.8rem;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text);
-      margin-bottom: 0.6rem;
-    }
-
-    .info-text {
-      font-size: 0.85rem;
-      line-height: 1.65;
-      color: var(--muted);
-      font-weight: 300;
-    }
-
-    .info-text strong {
-      color: var(--text);
-      font-weight: 500;
-    }
-
-    /* responsive */
     @media (max-width: 480px) {
-      .card { padding: 2.5rem 1.8rem; border-radius: 18px; }
+      .card, .poetry-card, .photos-card { padding: 2rem 1.6rem; border-radius: 18px; }
       .topbar { padding: 1.2rem 1.5rem; }
     }
   </style>
@@ -287,46 +358,50 @@
 
   <div class="topbar">
     <div class="event-name">FESTA PER PIO</div>
-    <div class="live-dot">Stato in tempo reale</div>
+    <div class="topbar-badge">Grazie a tutti</div>
   </div>
 
   <div class="wrapper">
+
+    <!-- HERO -->
     <div class="card">
-
-      <div class="status-badge">
-        <span></span>
-        Aggiornato oggi
-      </div>
-
-      <!-- ✅ QUANDO L'EVENTO SI FA: tieni questo, elimina il blocco ANNULLATO sotto -->
-      <div class="status-word">Festa confermata</div>
+      <div class="status-badge">23 maggio 2026</div>
+      <div class="hero-title">Grazie!</div>
       <div class="divider"></div>
       <p class="message">
-        <strong>Vi aspettiamo...</strong><br/>
-        Ecco un promemoria dei dettagli:
+        Grazie a tutti per essere venuti<br/>e per aver reso questa festa indimenticabile.<br/><br/>
+        È stato un pomeriggio speciale,<br/>vissuto insieme con gioia e affetto.
       </p>
-      <div class="details">
-        <div class="pill"><span class="icon">📍</span> Via San Giuseppe 4, 6853 Ligornetto</div>
-        <div class="pill"><span class="icon">🕐</span> Dalle 15:00</div>
-        <div class="pill"><span class="icon">📞</span> Per eventuali comunicazioni: 091 647 05 80</div>
-      </div>
-
-      <div class="divider" style="margin-top: 2rem;"></div>
-
-      <div class="info-block">
-        <div class="info-title">🅿️ Parcheggi</div>
-        <p class="info-text">Vi chiediamo di utilizzare i parcheggi <strong>gratuiti</strong> della <strong>Chiesetta di San Giuseppe</strong>, dell'<strong>Asilo</strong> o del <strong>Campo da calcio</strong> dopo il Museo Vela. In alternativa i parcheggi <strong>a pagamento</strong> dell'<strong>Oratorio</strong> o di <strong>Casa Pessina</strong>. Quelli di casa nostra saranno riservati per chi ha difficoltà nel camminare. Vi chiediamo inoltre di <strong>non entrare nei prati</strong>.</p>
-      </div>
-
-      <div class="info-block">
-        <div class="info-title">📸 Foto</div>
-        <p class="info-text">Dopo la festa su questo sito potrete <strong>caricare le foto</strong> che avete fatto e <strong>scaricare</strong> quelle degli altri partecipanti.</p>
-      </div>
-
     </div>
+
+    <!-- POESIA -->
+    <div class="poetry-card">
+      <div class="section-label">📜 La poesia della festa</div>
+
+      <!-- MODIFICA QUI: titolo e autore -->
+      <div class="poem-title">I colori dell'estate</div>
+      <div class="poem-author">— Alberto Nessi</div>
+
+      <a class="download-btn" href="https://drive.google.com/file/d/1sJw-TM5AyN4B_Za2Zak9b4Q_dUFPlNqj/view?usp=sharing" target="_blank">
+        ⬇️ Scarica il PDF
+      </a>
+    </div>
+
+    <!-- FOTO -->
+    <div class="photos-card">
+      <span class="photos-icon">📸</span>
+      <div class="photos-title">Le foto della festa</div>
+      <p class="photos-desc">
+        Carica le foto che hai scattato<br/>e scarica quelle degli altri partecipanti.
+      </p>
+      <a class="photos-btn" href="https://fotofesta.netlify.app" target="_blank">
+        Vai alla galleria →
+      </a>
+    </div>
+
   </div>
 
-  <div class="footer">Ultimo aggiornamento · [DATA] · [ORA]</div>
+  <div class="footer">Festa per Pio · con affetto</div>
 
 </body>
 </html>
